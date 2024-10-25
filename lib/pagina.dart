@@ -26,6 +26,32 @@ class _PaginaState extends State<Pagina> {
     });
   }
 
+  void _createPost() async {
+    Post novoPost = Post(userId: 200, id: 200, title: 'legal', body: 'legal');
+    Post? aux = await apiService.createPost(novoPost);
+    if (aux != null) {
+      print('${aux.userId} - ${aux.id} - ${aux.title} - ${aux.body}');
+    }
+    _loadPosts();
+  }
+
+  void _updatePost() async {
+    Post updatePost = Post(
+        userId: 200,
+        id: 200,
+        title: 'Titulo Atualizado',
+        body: 'Informações atualizadas');
+    Post? aux = await apiService.updatePost(updatePost, 1);
+    if (aux != null) {
+      print('${aux.userId} - ${aux.id} - ${aux.title} - ${aux.body}');
+    }
+    _loadPosts();
+  }
+
+  void _deletePost() async {
+    await apiService.deletePost(1);
+    _loadPosts();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,6 +76,13 @@ class _PaginaState extends State<Pagina> {
           );
         },
       ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+        FloatingActionButton(onPressed: _createPost, child: const Icon(Icons.add)),
+        FloatingActionButton(onPressed: _updatePost, child: const Icon(Icons.update)),
+        FloatingActionButton(onPressed: _deletePost, child: const Icon(Icons.delete)),
+      ]),
     );
   }
 }

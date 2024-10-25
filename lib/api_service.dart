@@ -25,20 +25,31 @@ class ApiService {
       body: jsonEncode(post.toMap()),
     );
     if(response.statusCode == 201){
+      print("Dado criado com sucesso");
         return Post.fromMap(jsonDecode(response.body));
     }
     return null;
   }
 
-  Future<Post?> updatePost(Post pos, int id) async {
+  Future<Post?> updatePost(Post post, int id) async {
     final response = await http.put(
-      Uri.parse(baseUrl),
+      Uri.parse('$baseUrl/$id'),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode(post.toMap()),
     );
-    if(response.statusCode == 201){
+    if(response.statusCode == 200){
+      print("Dado atualizado com sucesso");
         return Post.fromMap(jsonDecode(response.body));
     }
     return null;
+  }
+  
+  Future<void> deletePost(int id) async {
+    final response = await http.delete(
+      Uri.parse('$baseUrl/$id'),
+    );
+    if(response.statusCode == 200){
+      print("Dado apagado com sucesso");
+    }
   }
 }
